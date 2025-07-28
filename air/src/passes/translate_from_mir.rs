@@ -1,4 +1,9 @@
+#[cfg(feature = "std")]
 use std::{collections::BTreeMap, ops::Deref};
+#[cfg(not(feature = "std"))]
+use alloc::{collections::BTreeMap, boxed::Box, string::String, vec::Vec};
+#[cfg(not(feature = "std"))]
+use core::ops::Deref;
 
 use air_parser::{
     SemanticAnalysisError,

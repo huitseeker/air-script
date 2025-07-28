@@ -12,6 +12,7 @@ mod source_sections;
 mod trace;
 mod variables;
 
+#[cfg(feature = "std")]
 use std::sync::Arc;
 
 use air_pass::Pass;
@@ -108,6 +109,7 @@ impl SplitEmitter {
         self.capture.captured()
     }
 
+    #[cfg(feature = "std")]
     pub fn print_captured_to_stderr(&self) {
         use std::io::Write;
 

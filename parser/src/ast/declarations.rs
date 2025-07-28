@@ -23,7 +23,16 @@
 //!
 //! There is no notion of public/private visiblity, so any declaration of the above types may be
 //! imported into another module, and "wildcard" imports will import all importable items.
-use std::{collections::HashSet, fmt};
+
+#[cfg(feature = "std")]
+use std::fmt;
+#[cfg(not(feature = "std"))]
+use alloc::fmt;
+
+#[cfg(feature = "std")]
+use std::collections::BTreeSet as HashSet;
+#[cfg(not(feature = "std"))]
+use alloc::collections::BTreeSet as HashSet;
 
 use miden_diagnostics::{SourceSpan, Spanned};
 

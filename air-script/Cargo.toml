@@ -12,6 +12,10 @@ keywords = ["air", "stark", "zero-knowledge", "zkp"]
 edition.workspace = true
 rust-version.workspace = true
 
+[features]
+default = ["std"]
+std = []
+
 [[bin]]
 name = "airc"
 path = "src/main.rs"

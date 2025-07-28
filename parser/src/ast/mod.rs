@@ -8,12 +8,28 @@ mod trace;
 mod types;
 pub mod visit;
 
+#[cfg(not(feature = "std"))]
+extern crate alloc;
+
+#[cfg(feature = "std")]
 use std::{
-    collections::{BTreeMap, HashMap, HashSet, VecDeque},
+    collections::{BTreeMap, HashSet, VecDeque},
     fmt, mem,
     path::{Path, PathBuf},
     sync::Arc,
 };
+
+#[cfg(not(feature = "std"))]
+use alloc::{
+    collections::{BTreeMap, BTreeSet, VecDeque},
+    format,
+    string::{String, ToString},
+    vec::Vec,
+    sync::Arc,
+};
+
+#[cfg(not(feature = "std"))]
+use core::{fmt, mem, path::{Path, PathBuf}};
 
 use miden_diagnostics::{
     CodeMap, DiagnosticsHandler, FileName, Severity, SourceSpan, Span, Spanned,
@@ -393,7 +409,7 @@ impl fmt::Display for Program {
 /// the root module using the contents of the library.
 #[derive(Debug, Default)]
 pub struct Library {
-    pub modules: HashMap<ModuleId, Module>,
+    pub modules: BTreeMap<ModuleId, Module>,
 }
 impl Library {
     pub fn new(
@@ -401,7 +417,10 @@ impl Library {
         codemap: Arc<CodeMap>,
         mut modules: Vec<Module>,
     ) -> Result<Self, SemanticAnalysisError> {
-        use std::collections::hash_map::Entry;
+        #[cfg(feature = "std")]
+        use std::collections::btree_map::Entry;
+        #[cfg(not(feature = "std"))]
+        use alloc::collections::btree_map::Entry;
 
         let mut lib = Library::default();
 

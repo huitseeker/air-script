@@ -11,6 +11,10 @@ keywords = ["air", "stark", "zero-knowledge", "zkp"]
 rust-version.workspace = true
 edition.workspace = true
 
+[features]
+default = ["std"]
+std = []
+
 [build-dependencies]
 lalrpop = { version = "0.20", default-features = false }
 

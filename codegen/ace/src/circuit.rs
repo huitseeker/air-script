@@ -1,4 +1,7 @@
+#[cfg(feature = "std")]
 use std::collections::BTreeMap;
+#[cfg(not(feature = "std"))]
+use alloc::collections::BTreeMap;
 
 use miden_core::Felt;
 

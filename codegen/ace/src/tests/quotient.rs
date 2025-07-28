@@ -1,4 +1,7 @@
+#[cfg(feature = "std")]
 use std::collections::BTreeMap;
+#[cfg(not(feature = "std"))]
+use alloc::collections::BTreeMap;
 
 use air_ir::{Air, ConstraintDomain, NodeIndex, Operation, Value};
 use miden_core::Felt;
@@ -95,7 +98,7 @@ pub fn eval_quotient(air: &Air, ace_vars: &AceVars, log_trace_len: u32) -> QuadF
 
     // Iterator for all powers of alpha
     let mut alpha_pow_iter =
-        std::iter::successors(Some(QuadFelt::ONE), move |alpha_prev| Some(*alpha_prev * alpha));
+        core::iter::successors(Some(QuadFelt::ONE), move |alpha_prev| Some(*alpha_prev * alpha));
 
     // Evaluate linear-combination of integrity constraints.
     let integrity: QuadFelt = [0, 1]

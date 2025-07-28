@@ -1,5 +1,5 @@
 use std::sync::Arc;
-use std::collections::HashSet;
+use alloc::collections::BTreeSet;
 
 use miden_diagnostics::{CodeMap, DiagnosticsHandler, Severity, SourceSpan, Span, Spanned};
 
@@ -85,7 +85,7 @@ Declaration: Declaration = {
 Import: Span<Import> = {
     <l:@L> "use" <module:Identifier> "::" "*" ";" <r:@R> => Span::new(span!(l, r), Import::All { module: Identifier::new(span!(l, r), module.name()) }),
     <l:@L> "use" <module:Identifier> "::" <item:Identifier> ";" <r:@R> => {
-        let mut items: HashSet<Identifier> = HashSet::default();
+        let mut items: BTreeSet<Identifier> = BTreeSet::default();
         items.insert(item);
         Span::new(span!(l, r), Import::Partial { module, items })
     }

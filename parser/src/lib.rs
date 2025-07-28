@@ -1,6 +1,9 @@
 #[macro_use]
 extern crate lalrpop_util;
 
+#[cfg(not(feature = "std"))]
+extern crate alloc;
+
 pub mod ast;
 mod lexer;
 mod parser;
@@ -8,6 +11,7 @@ mod sema;
 pub mod symbols;
 pub mod transforms;
 
+#[cfg(feature = "std")]
 use std::{path::Path, sync::Arc};
 
 use miden_diagnostics::{CodeMap, DiagnosticsHandler};
@@ -19,6 +23,7 @@ pub use self::{
 };
 
 /// Parses the provided source and returns the AST.
+#[cfg(feature = "std")]
 pub fn parse(
     diagnostics: &DiagnosticsHandler,
     codemap: Arc<CodeMap>,
@@ -36,6 +41,7 @@ pub fn parse(
 }
 
 /// Parses the provided source and returns the AST.
+#[cfg(feature = "std")]
 pub fn parse_file<P: AsRef<Path>>(
     diagnostics: &DiagnosticsHandler,
     codemap: Arc<CodeMap>,
@@ -55,6 +61,7 @@ pub fn parse_file<P: AsRef<Path>>(
 /// Parses the provided source string with a default [CodeMap] and [DiagnosticsHandler].
 ///
 /// This is primarily provided for use in tests, you should generally prefer [parse]
+#[cfg(feature = "std")]
 pub fn parse_str(source: &str) -> Result<ast::Program, ParseError> {
     use miden_diagnostics::{
         DefaultEmitter, DiagnosticsConfig, Verbosity, term::termcolor::ColorChoice,
@@ -75,6 +82,7 @@ pub fn parse_str(source: &str) -> Result<ast::Program, ParseError> {
 /// Parses a [Module] from the given path.
 ///
 /// This is primarily intended for use in the import resolution phase.
+#[cfg(feature = "std")]
 pub(crate) fn parse_module_from_file<P: AsRef<Path>>(
     diagnostics: &DiagnosticsHandler,
     codemap: Arc<CodeMap>,

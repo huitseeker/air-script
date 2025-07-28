@@ -11,6 +11,10 @@ keywords = ["air", "stark", "winterfell", "zero-knowledge", "zkp"]
 edition.workspace = true
 rust-version.workspace = true
 
+[features]
+default = ["std"]
+std = []
+
 [dependencies]
 air-ir = { package = "air-ir", path = "../../air", version = "0.5" }
 anyhow = { workspace = true }

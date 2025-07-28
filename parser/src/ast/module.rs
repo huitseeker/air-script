@@ -1,4 +1,10 @@
+#[cfg(not(feature = "std"))]
+extern crate alloc;
+
+#[cfg(feature = "std")]
 use std::collections::{BTreeMap, HashSet};
+#[cfg(not(feature = "std"))]
+use alloc::collections::{BTreeMap, BTreeSet as HashSet};
 
 use miden_diagnostics::{DiagnosticsHandler, Severity, SourceSpan, Span, Spanned};
 
@@ -238,7 +244,7 @@ impl Module {
 
                 Ok(())
             },
-            Import::Partial { module: name, mut items } => {
+            Import::Partial { module: name, items } => {
                 if name == self.name {
                     return Err(SemanticAnalysisError::ImportSelf(name.span()));
                 }
@@ -256,7 +262,7 @@ impl Module {
                                 .emit();
                         },
                         Import::Partial { items: prev_items, .. } => {
-                            for item in items.drain() {
+                            for item in items.into_iter() {
                                 if let Some(prev) = prev_items.get(&item) {
                                     diagnostics
                                         .diagnostic(Severity::Warning)

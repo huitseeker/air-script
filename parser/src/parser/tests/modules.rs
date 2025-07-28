@@ -1,5 +1,12 @@
 use miden_diagnostics::SourceSpan;
 
+#[cfg(not(feature = "std"))]
+extern crate alloc;
+#[cfg(not(feature = "std"))]
+use alloc::collections::BTreeSet;
+#[cfg(feature = "std")]
+use std::collections::BTreeSet;
+
 use super::ParseTest;
 use crate::ast::*;
 

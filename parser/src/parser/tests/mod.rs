@@ -1,5 +1,12 @@
 use crate::ast::*;
 
+#[cfg(not(feature = "std"))]
+extern crate alloc;
+#[cfg(not(feature = "std"))]
+use alloc::collections::BTreeSet;
+#[cfg(feature = "std")]
+use std::collections::BTreeSet;
+
 macro_rules! assert_matches {
     ($left:expr, $(|)? $( $pattern:pat_param )|+ $( if $guard: expr )? $(,)?) => {
         match $left {
@@ -632,7 +639,7 @@ macro_rules! import_all {
 
 macro_rules! import {
     ($module:ident, $item:ident) => {{
-        let mut items: std::collections::HashSet<Identifier> = std::collections::HashSet::default();
+        let mut items: BTreeSet<Identifier> = BTreeSet::default();
         items.insert(ident!($item));
         Import::Partial { module: ident!($module), items }
     }};

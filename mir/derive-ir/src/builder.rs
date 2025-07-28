@@ -1,5 +1,8 @@
 extern crate proc_macro;
+#[cfg(feature = "std")]
 use std::collections::HashMap;
+#[cfg(not(feature = "std"))]
+use alloc::collections::BTreeMap as HashMap;
 
 use quote::{format_ident, quote};
 use syn::DeriveInput;

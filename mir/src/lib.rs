@@ -1,3 +1,6 @@
+#[cfg(not(feature = "std"))]
+extern crate alloc;
+
 mod codegen;
 
 pub mod ir;
