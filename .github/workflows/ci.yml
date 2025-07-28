@@ -26,3 +26,18 @@ jobs:
         uses: actions-rs/cargo@v1
         with:
           command: test
+
+  build-no-std:
+    name: Build no-std
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@main
+      - name: Install rust
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          override: true
+      - name: Install make
+        run: sudo apt-get update && sudo apt-get install -y make
+      - name: Build no-std
+        run: make build-no-std

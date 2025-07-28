@@ -43,3 +43,7 @@ doc: ## Generates & checks documentation
 .PHONY: book
 book: ## Builds the book & serves documentation site
 	mdbook serve --open docs
+
+.PHONY: build-no-std
+build-no-std: ## Builds without the standard library
+	cargo build --no-default-features --workspace
